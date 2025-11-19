@@ -37,14 +37,19 @@ const TopMessage = () => {
                       case 'error': return '#810000D1'
                       case 'warning': return '#ffb900D1'
                       case 'display': return '#008432D1'
-                      case 'success': return '#15803dD1'
+                      case 'success': return '#ffffff'
                       default:
                         return 'transparent'
                     }
                 })()
             }]}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <CustomText style={[{color: '#ffffff', fontFamily: 'Astonpoliz', fontSize: 15}]}>{erro}</CustomText>
+                <View style={{flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <CustomText style={[{color: erroType === 'success' ? '#000000' : '#ffffff', fontSize: 18}]}>{erro}</CustomText>
+                    {erroType === 'success' ?
+                        <CustomText style={{color: '#9B9B9B', fontSize: 12}}>
+                            Parabéns, sua compra foi confirmada! 🎉
+                        </CustomText>
+                    : null}
                 </View>
             </Animated.View>
         : null}
@@ -55,11 +60,19 @@ const styles = StyleSheet.create({
     container: {
         position:'absolute',
         zIndex: 9,
-        top: 40,
+        top: 340,
         left: 30,
         width: Platform.OS === 'web' ? windowWidth-400 : windowWidth-60,
         padding: 30,
-        borderRadius: 10
+        borderRadius: 20,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     }
 })
 

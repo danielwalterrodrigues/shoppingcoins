@@ -38,7 +38,8 @@ const Header: React.FC = () => {
         } else {
             let imageUri: string | undefined = response.assets?.[0]?.uri;
             if (imageUri) {
-                 setPhoto(imageUri);
+                setUserData({...userData, photoUrl: imageUri } as UserData);
+                console.log('Selected image URI: ', imageUri);
             }
         }
     });
@@ -86,9 +87,9 @@ const Header: React.FC = () => {
             >
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
                     <View style={{width: 300, backgroundColor: '#ffffff', borderRadius: 20, padding: 20, alignItems: 'center'}}>
-                        <Botao title='Abrir a câmera' onPress={() => {openCamera(); setModalVisible(!modalVisible)}} />
-                        <Botao title='Abrir Galeria' onPress={() => {openImagePicker(); setModalVisible(!modalVisible)}} />
-                        <Botao  title='Fechar' onPress={() => setModalVisible(!modalVisible)} />
+                        <Botao type='blue' title='Abrir a câmera' onPress={() => {openCamera(); setModalVisible(!modalVisible)}} />
+                        <Botao type='blue' title='Abrir Galeria' onPress={() => {openImagePicker(); setModalVisible(!modalVisible)}} />
+                        <Botao color='#666666' title='Fechar' onPress={() => setModalVisible(!modalVisible)} />
                     </View>
                 </View>  
           </Modal>
@@ -126,9 +127,9 @@ const styles = StyleSheet.create({
     borderColor: '#F9F9F966'
   },
   nameTitle: {
-    paddingHorizontal: 20,
-    paddingVertical: 3,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
     borderRadius: 50,
-    backgroundColor: '#000000',
+    backgroundColor: '#000000E6',
   }
 })

@@ -4,7 +4,7 @@ import CustomText from './CustomText'
 import { windowWidth } from './Dimensions'
 
 interface BotaoProps {
-    type?: 'blue' | 'transparent' | 'google' | 'apple';
+    type?: 'blue' | 'transparent';
     title: string;
     onPress: () => void;
     style?: object;
@@ -35,7 +35,7 @@ const Botao: React.FC<BotaoProps> = (props) => {
                 return (
                     <TouchableOpacity onPress={props.onPress} style={[styles.button, props.style]}>
                         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <CustomText type='bold' style={{color: '#000000', fontFamily: 'Sora-Regular', fontSize: 20}}>{props.title}</CustomText>
+                            <CustomText type='bold' style={{color: props.color, fontFamily: 'Sora-Regular', fontSize: 20}}>{props.title}</CustomText>
                         </View>
                     </TouchableOpacity>
                   )

@@ -4,6 +4,7 @@ import {createContext, Dispatch, SetStateAction} from 'react';
 export interface CartData {
     userId: number;
     productId: number;
+    productName: string,
     qty: number;
     amount: number;
     paymentDate: Date;

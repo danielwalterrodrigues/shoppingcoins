@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Animated, {SlideInDown, SlideOutDown} from 'react-native-reanimated';
 import UserProfile, { UserData, UserContextType } from '../../Contexts/UserContext';
 import api from '../../Connection/Axios';
@@ -7,6 +7,7 @@ import ErrorProfile, { ErrorContextType } from '../../Contexts/ErrorContext';
 import CustomText from '../../Utilities/CustomText';
 import { estilos } from '../../Utilities/Estilos';
 import Botao from '../../Utilities/Button';
+import { storage } from '../../../App';
 
 const Login: React.FC = () => {
     const logo = require('../../assets/logo.png');
@@ -16,6 +17,15 @@ const Login: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
+    const [storagedUser, setStoragedUser] = useState<UserData | null>(null);
+
+    useEffect(() => {   
+        const storedUserData = storage.getString('userData');
+        if (storedUserData) {
+            const parsedUserData: UserData = JSON.parse(storedUserData);
+            setStoragedUser(parsedUserData);
+        }
+    }, []);
 
     function ValidateEmail(): void {
         var re = /\S+@\S+\.\S+/;
@@ -34,7 +44,12 @@ const Login: React.FC = () => {
                 password: password
             }).then((response) => {
                 const data: UserData = response.data.user;
-                setUserData(data);
+                if (storagedUser && storagedUser.userId === data.userId) {
+                    setUserData(JSON.parse(storage.getString('userData') || 'null'));
+                } else {
+                    setUserData(data);
+                    storage.set('userData', JSON.stringify(data));
+                }
             });
 
         } catch (error: any) {
@@ -45,8 +60,6 @@ const Login: React.FC = () => {
             setLoading(false);
         }
     }
-
-    console.log('User Data:', userData);
 
   return (
     <View style={estilos.container}>
