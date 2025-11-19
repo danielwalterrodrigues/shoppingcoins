@@ -1,40 +1,49 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useState } from 'react';
+import { StatusBar, StyleSheet, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { createMMKV } from 'react-native-mmkv'
+import CustomText from './src/Utilities/CustomText';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import CartProfile, { CartContextType, CartData } from './src/Contexts/CartContext';
+import UserProfile, { UserContextType, UserData } from './src/Contexts/UserContext';
+import ErrorProfile, { ErrorContextType, ErrorData } from './src/Contexts/ErrorContext';
+import NotificationProfile, { NotificationContextType } from './src/Contexts/NotificationContext';
+import { NavigationContainer } from '@react-navigation/native';
+
+import TopMessage from './src/Utilities/Error';
+import PosLogin from './src/Routes/posLogin';
+import PreLogin from './src/Routes/preLogin';
+  
+export const storage = createMMKV()
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [cartData, setCartData] = useState<CartData | null>(null);
+  const [errorData, setErrorData] = useState<ErrorData | null>(null);
+
+  const userContextValue: UserContextType = [userData, setUserData];
+  const cartContextValue: CartContextType = [cartData, setCartData];
+  const errorContextValue: ErrorContextType = [errorData, setErrorData];
+  const notificationContextValue: NotificationContextType = [null, () => {}];
+  
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+      <UserProfile.Provider value={userContextValue}>
+        <CartProfile.Provider value={cartContextValue}>
+          <ErrorProfile.Provider value={errorContextValue}>
+            <NavigationContainer>
+              <View style={styles.container}>
+                <TopMessage />
+                {userData?.logged ? <PosLogin /> : <PreLogin />}
+              </View>
+            </NavigationContainer>
+          </ErrorProfile.Provider>
+        </CartProfile.Provider>
+      </UserProfile.Provider>
   );
 }
 
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
 
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
