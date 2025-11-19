@@ -84,5 +84,10 @@ export const estilos = StyleSheet.create({
         paddingVertical: 15,
         marginVertical: 5,
         width: 'auto'
+    },
+    lineHorizontal: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
     }
 })
